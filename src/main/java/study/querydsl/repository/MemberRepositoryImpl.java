@@ -120,15 +120,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         return StringUtils.hasText(username) ? member.username.eq(username) : null;
     }
 
-    private Predicate teamNameEq(String teamName) {
+    private BooleanExpression teamNameEq(String teamName) {
         return StringUtils.hasText(teamName) ? team.name.eq(teamName) : null;
     }
 
-    private Predicate ageGoe(Integer ageGoe) {
+    private BooleanExpression ageGoe(Integer ageGoe) {
         return ageGoe != null ? member.age.goe(ageGoe) : null;
     }
 
-    private Predicate ageLoe(Integer ageLoe) {
+    private BooleanExpression ageLoe(Integer ageLoe) {
         return ageLoe != null ? member.age.goe(ageLoe) : null;
     }
 }
