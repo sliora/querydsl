@@ -60,6 +60,25 @@ public class MemberTestRepository extends Querydsl4RepositorySupport {
         );
     }
 
+    public Page<Member> applyPagination2(MemberSearchCondition condition,
+                                         Pageable pageable) {
+        return applyPagination(pageable, contentQuery -> contentQuery
+                        .selectFrom(member)
+                        .leftJoin(member.team, team)
+                        .where(usernameEq(condition.getUsername()),
+                                teamNameEq(condition.getTeamName()),
+                                ageGoe(condition.getAgeGoe()),
+                                ageLoe(condition.getAgeLoe())),
+                countQuery -> countQuery
+                        .selectFrom(member)
+                        .leftJoin(member.team, team)
+                        .where(usernameEq(condition.getUsername()),
+                                teamNameEq(condition.getTeamName()),
+                                ageGoe(condition.getAgeGoe()),
+                                ageLoe(condition.getAgeLoe()))
+        );
+    }
+
     private BooleanExpression usernameEq(String username) {
         return StringUtils.hasText(username) ? member.username.eq(username) : null;
     }
