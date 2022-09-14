@@ -9,6 +9,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import study.querydsl.dto.MemberSearchCondition;
+import study.querydsl.dto.MemberTeamDto;
 import study.querydsl.entity.Member;
 import study.querydsl.repository.support.Querydsl4RepositorySupport;
 
@@ -49,7 +50,7 @@ public class MemberTestRepository extends Querydsl4RepositorySupport {
         return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
     }
 
-    public Page<Member> applyPagination(MemberSearchCondition condition, Pageable pageable) {
+    public Page<MemberTeamDto> applyPagination(MemberSearchCondition condition, Pageable pageable) {
         return applyPagination(pageable, query -> query
                 .selectFrom(member)
                 .where(usernameEq(condition.getUsername()),
@@ -60,8 +61,8 @@ public class MemberTestRepository extends Querydsl4RepositorySupport {
         );
     }
 
-    public Page<Member> applyPagination2(MemberSearchCondition condition,
-                                         Pageable pageable) {
+    public Page<MemberTeamDto> applyPagination2(MemberSearchCondition condition,
+                                                Pageable pageable) {
         return applyPagination(pageable, contentQuery -> contentQuery
                         .selectFrom(member)
                         .leftJoin(member.team, team)

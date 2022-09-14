@@ -9,6 +9,7 @@ import study.querydsl.dto.MemberSearchCondition;
 import study.querydsl.dto.MemberTeamDto;
 import study.querydsl.repository.MemberJpaRepository;
 import study.querydsl.repository.MemberRepository;
+import study.querydsl.repository.MemberTestRepository;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class MemberController {
 
     private final MemberRepository memberRepository;
 
+    private final MemberTestRepository memberTestRepository;
+
     @GetMapping("/v1/members")
     public List<MemberTeamDto> searchMemberV1(MemberSearchCondition condition) {
         return memberJpaRepository.search(condition);
@@ -27,5 +30,10 @@ public class MemberController {
     @GetMapping("/v2/members")
     public Page<MemberTeamDto> searchMemberV2(MemberSearchCondition condition, Pageable pageable) {
         return memberRepository.searchPageComplex(condition, pageable);
+    }
+
+    @GetMapping("/v3/members")
+    public Page<MemberTeamDto> searchMemberV3(MemberSearchCondition condition, Pageable pageable) {
+        return memberTestRepository.applyPagination(condition, pageable);
     }
 }
