@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -99,5 +100,28 @@ class MemberRepositoryTest {
         Page<MemberTeamDto> result = memberRepository.searchPageSimple(memberSearchCondition, pageRequest);
         assertThat(result.getSize()).isEqualTo(3);
         assertThat(result.getContent()).extracting("username").containsExactly("member1", "member2", "member3");
+    }
+
+    @Test
+    void memberUpdate() {
+
+        //given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        em.persist(member1);
+
+        //when
+        Optional<Member> result = memberRepository.findById(member1.getId());
+        Member member = result.orElseThrow(() -> new IllegalArgumentException("없는 사용자 입니다."));
+
+        member.setAge(20);
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertThat(member.getAge()).isEqualTo(20);
     }
 }
